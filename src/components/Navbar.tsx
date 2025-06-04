@@ -1,0 +1,59 @@
+import { Geist_Mono } from "next/font/google";
+import Link from "next/link";
+
+const geist = Geist_Mono({
+  subsets: ["latin"],
+  weight: '400',
+});
+
+const Navbar = () => {
+  return (
+    <nav className={`bg-black text-white shadow-md ${geist.className} border-b-[1px] border-gray-600 tracking-tighter`}>
+      <div className="max-w-7xl mx-auto p-3 flex items-center justify-between">
+
+        {/* Pasty Branding */}
+        <div className="flex items-center justify-center space-x-8">
+        <div className="text-2xl font-bold tracking-wide">
+          <span className="text-blue-400">P</span>asty
+        </div>
+
+        {/* API, Paste */}
+        <ul className="text-sm flex space-x-10 text-gray-300">
+          <li className="hover:bg-gray-600 rounded-md">
+            <Link href="#" className="m-2">
+              API
+            </Link>
+          </li>
+          <li className="hover:bg-gray-600 rounded-md">
+            <Link href="#" className="m-2">
+              Paste
+            </Link>
+          </li>
+        </ul>
+        </div>
+
+        {/* Sign Up, Log In */}
+        <ul className="flex space-x-6 text-sm">
+          <li>
+            <Link 
+              href="#"
+              className="border-[1px] px-2.5 py-1.5 rounded-md hover:bg-zinc-700 border-gray-600"
+            >
+              Sign up
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#"
+              className="transition-colors duration-200 bg-white text-black px-2.5 py-1.5 rounded-md hover:bg-zinc-300"
+            >
+              Log in
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
