@@ -6,6 +6,11 @@ const geist = Geist_Mono({
   weight: "400",
 });
 
+const loggedIn = async () => {
+  "use server";
+   
+}
+
 const Home = () => {
   return (
     <div>
