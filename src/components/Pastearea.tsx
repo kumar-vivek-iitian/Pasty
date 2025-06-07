@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,6 @@ import "codemirror/theme/dracula.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/theme/eclipse.css";
 
-let languageLoaded = false;
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
   require("codemirror/mode/htmlmixed/htmlmixed");
@@ -36,7 +36,6 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/nginx/nginx");
   require("codemirror/mode/dockerfile/dockerfile");
   require("codemirror/mode/properties/properties");
-    languageLoaded = true;
 }
 // import "codemirror/mode/javascript/javascript";
 // import "codemirror/mode/htmlmixed/htmlmixed";
