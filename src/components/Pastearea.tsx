@@ -11,29 +11,57 @@ import "codemirror/theme/dracula.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/theme/eclipse.css";
 
-import "codemirror/mode/javascript/javascript";
-import "codemirror/mode/htmlmixed/htmlmixed";
-import "codemirror/mode/css/css";
-import "codemirror/mode/xml/xml";
+let languageLoaded = false;
+if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
+  require("codemirror/mode/javascript/javascript");
+  require("codemirror/mode/htmlmixed/htmlmixed");
+  require("codemirror/mode/css/css");
+  require("codemirror/mode/xml/xml");
 
-import "codemirror/mode/python/python";
-import "codemirror/mode/clike/clike";
-import "codemirror/mode/ruby/ruby";
-import "codemirror/mode/php/php";
-import "codemirror/mode/go/go";
-import "codemirror/mode/rust/rust";
-import "codemirror/mode/perl/perl";
-import "codemirror/mode/shell/shell";
-import "codemirror/mode/sql/sql";
-import "codemirror/mode/swift/swift";
+  require("codemirror/mode/python/python");
+  require("codemirror/mode/clike/clike");
+  require("codemirror/mode/ruby/ruby");
+  require("codemirror/mode/php/php");
+  require("codemirror/mode/go/go");
+  require("codemirror/mode/rust/rust");
+  require("codemirror/mode/perl/perl");
+  require("codemirror/mode/shell/shell");
+  require("codemirror/mode/sql/sql");
+  require("codemirror/mode/swift/swift");
 
-import "codemirror/mode/markdown/markdown";
-import "codemirror/mode/yaml/yaml";
-import "codemirror/mode/toml/toml";
+  require("codemirror/mode/markdown/markdown");
+  require("codemirror/mode/yaml/yaml");
+  require("codemirror/mode/toml/toml");
 
-import "codemirror/mode/nginx/nginx";
-import "codemirror/mode/dockerfile/dockerfile";
-import "codemirror/mode/properties/properties";
+  require("codemirror/mode/nginx/nginx");
+  require("codemirror/mode/dockerfile/dockerfile");
+  require("codemirror/mode/properties/properties");
+    languageLoaded = true;
+}
+// import "codemirror/mode/javascript/javascript";
+// import "codemirror/mode/htmlmixed/htmlmixed";
+// import "codemirror/mode/css/css";
+// import "codemirror/mode/xml/xml";
+
+// import "codemirror/mode/python/python";
+// import "codemirror/mode/clike/clike";
+// import "codemirror/mode/ruby/ruby";
+// import "codemirror/mode/php/php";
+// import "codemirror/mode/go/go";
+// import "codemirror/mode/rust/rust";
+// import "codemirror/mode/perl/perl";
+// import "codemirror/mode/shell/shell";
+// import "codemirror/mode/sql/sql";
+// import "codemirror/mode/swift/swift";
+
+// import "codemirror/mode/markdown/markdown";
+// import "codemirror/mode/yaml/yaml";
+// import "codemirror/mode/toml/toml";
+
+// import "codemirror/mode/nginx/nginx";
+// import "codemirror/mode/dockerfile/dockerfile";
+// import "codemirror/mode/properties/properties";
+
 import { Geist_Mono } from "next/font/google";
 
 const geist = Geist_Mono({
@@ -42,6 +70,7 @@ const geist = Geist_Mono({
 });
 
 const Pastearea = () => {
+
   const [code, setCode] = useState("");
   const [theme, setTheme] = useState("material");
   const [language, setLanguage] = useState("cpp");

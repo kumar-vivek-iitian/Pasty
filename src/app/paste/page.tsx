@@ -1,5 +1,7 @@
-import Pastearea from '@/components/Pastearea';
+"use client"
 
+
+import Pastearea from '@/components/Pastearea';
 const Paste = () => {
 
   return (

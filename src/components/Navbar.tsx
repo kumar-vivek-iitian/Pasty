@@ -25,7 +25,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="hover:bg-gray-600 rounded-md">
-            <Link href="#" className="m-2">
+            <Link href="/paste" className="m-2">
               Paste
             </Link>
           </li>
@@ -36,7 +36,7 @@ const Navbar = () => {
         <ul className="flex space-x-6 text-sm">
           <li>
             <Link 
-              href="#"
+              href="/register"
               className="border-[1px] px-2.5 py-1.5 rounded-md hover:bg-zinc-700 border-gray-600"
             >
               Sign up
@@ -44,7 +44,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              href="#"
+              href="/login"
               className="transition-colors duration-200 bg-white text-black px-2.5 py-1.5 rounded-md hover:bg-zinc-300"
             >
               Log in
