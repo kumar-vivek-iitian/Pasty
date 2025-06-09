@@ -1,34 +1,35 @@
 "use server"
 import { PrismaClient } from "@/generated/prisma";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.SECRET!;
 
 export async function addUser({
-  username,
+  email,
   password,
 }: {
-  username: string;
+  email: string;
   password: string;
 }) {
+  console.log("EMAIL : ", email)
+  if (!email) {
+    return { error: true, message: `Error` };
+  }
   const findUser = await prisma.users.findUnique({
-    where: { username },
+    where: { email },
   });
   if (findUser) {
     return { error: true, message: "User Already Exists" };
   }
-
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await prisma.users.create({
       data: {
-        username: username,
+        email,
         password: hashedPassword,
       },
     });
-    console.log("New user registered: ", newUser.username)
+    console.log("New user registered: ", newUser.email)
     return { error: false, message: `You are registered!` };
   } catch (err) {
     return { error: true, message: `Error: ${err}` };
@@ -42,7 +43,7 @@ export async function addPaste({
   theme,
   password,
   timeout,
-  username = null,
+  email = null,
 }: {
   title: string;
   language: string;
@@ -50,9 +51,9 @@ export async function addPaste({
   password: string | null;
   code: string;
   timeout : string,
-  username?: string | null;
+  email?: string | null;
 }) {
-  if (username) {
+  if (email) {
     const newPaste = await prisma.paste.create({
       data: {
         title,
@@ -61,7 +62,7 @@ export async function addPaste({
         timeout,
         theme,
         pasteContent: code,
-        username
+        email
       }
     })
     return newPaste.id;
@@ -80,27 +81,20 @@ export async function addPaste({
   }
 }
 
-export async function getUser(username : string) {
-  const user = prisma.users.findUnique({ where : { username } } )
+export async function getUser(email: string) {
+  const user = await prisma.users.findUnique({ where : { email } } )
   return user
 }
 
-async function getCookie(username : string) {
-  const cookie = jwt.sign({username}, JWT_SECRET, {algorithm: "HS256", expiresIn: "24hr"})
-  return cookie
+export async function getPastes(email: string) {
+  const pastes = await prisma.paste.findMany({where: {email}, select : {
+    title: true,
+    id : true
+  }})
+  return pastes
 }
 
-export async function Login(username : string, password : string) {
-  const user = await prisma.users.findUnique({where: {username}})
-  if (!user) {
-    return {error: true, message: "Invalid username or password."}
-  } else {
-    const result = await bcrypt.compare(password, user.password);
-    if (result) {
-      const cookie = await getCookie(username);
-      return {error: false, cookie};
-    } else {
-      return {error: true, message: "Invalid username or password."}
-    }
-  }
+export async function getPaste(pasteid : string) {
+  const paste = await prisma.paste.findUnique({where : {id : pasteid}})
+  return paste
 }

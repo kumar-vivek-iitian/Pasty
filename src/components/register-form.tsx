@@ -19,14 +19,15 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     toast("Registering...");
+    console.log("EMAIL: ", email)
     const response = await axios.post("/api/v1/register", {
-      username,
+      email,
       password
     });
     if (response.data.error) {
@@ -52,21 +53,15 @@ export function RegisterForm({
                 <Input
                   id="email"
                   type="email"
-                  value={username}
+                  value={email}
                   placeholder="m@example.com"
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
                 <Input
                   id="password"

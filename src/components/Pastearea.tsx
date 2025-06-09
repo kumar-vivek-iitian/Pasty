@@ -11,9 +11,10 @@ import "codemirror/theme/material.css";
 import "codemirror/theme/dracula.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/theme/eclipse.css";
+import { Geist_Mono } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
-  require("codemirror/mode/javascript/javascript");
   require("codemirror/mode/htmlmixed/htmlmixed");
   require("codemirror/mode/css/css");
   require("codemirror/mode/xml/xml");
@@ -37,31 +38,6 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/dockerfile/dockerfile");
   require("codemirror/mode/properties/properties");
 }
-// import "codemirror/mode/javascript/javascript";
-// import "codemirror/mode/htmlmixed/htmlmixed";
-// import "codemirror/mode/css/css";
-// import "codemirror/mode/xml/xml";
-
-// import "codemirror/mode/python/python";
-// import "codemirror/mode/clike/clike";
-// import "codemirror/mode/ruby/ruby";
-// import "codemirror/mode/php/php";
-// import "codemirror/mode/go/go";
-// import "codemirror/mode/rust/rust";
-// import "codemirror/mode/perl/perl";
-// import "codemirror/mode/shell/shell";
-// import "codemirror/mode/sql/sql";
-// import "codemirror/mode/swift/swift";
-
-// import "codemirror/mode/markdown/markdown";
-// import "codemirror/mode/yaml/yaml";
-// import "codemirror/mode/toml/toml";
-
-// import "codemirror/mode/nginx/nginx";
-// import "codemirror/mode/dockerfile/dockerfile";
-// import "codemirror/mode/properties/properties";
-
-import { Geist_Mono } from "next/font/google";
 
 const geist = Geist_Mono({
   subsets: ["latin"],
@@ -70,15 +46,15 @@ const geist = Geist_Mono({
 
 const Pastearea = () => {
 
+  const router = useRouter();
   const [code, setCode] = useState("");
   const [theme, setTheme] = useState("material");
   const [language, setLanguage] = useState("cpp");
-  const [password, setPassword] = useState("");
 
   const themes = ["material", "dracula", "monokai", "eclipse"];
 
   const duration = ["15mins", "30mins", "1hr", "8hr", "24hr"];
-  const [timeout, setTimeout] = useState(duration[0]);
+  const [timeout, setTimeoutt] = useState(duration[0]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [title, setTitle] = useState("Untitled");
@@ -144,13 +120,15 @@ const Pastearea = () => {
         language,
         theme,
         timeout,
-        password: password || null,
       };
       const response = await axios.post("/api/v1/paste-content", payload, {
         withCredentials: true,
       });
       if (response.status === 200) {
-        toast.success("success!");
+        toast.success("Success! Redirecting...");
+        setTimeout(() => {
+          router.push(`/p/${response.data.pasteid}`)
+        })
       } else {
         throw Error("Error Occurred.");
       }
@@ -231,7 +209,7 @@ const Pastearea = () => {
             <select
               id="timeout-select"
               value={timeout}
-              onChange={(e) => setTimeout(e.target.value)}
+              onChange={(e) => setTimeoutt(e.target.value)}
               className="text-sm px-3 py-2 border border-gray-300 rounded-md text-white focus:outline-none hover:border-gray-500 min-w-[150px] cursor-pointer transition duration-150 ease-in-out"
             >
               {duration.map((d) => (
@@ -244,17 +222,6 @@ const Pastearea = () => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center mt-4 gap-4">
-        <div>
-          <label htmlFor="password" className="ml-4 mt-2 text-white">
-            Optional Password:{" "}
-          </label>
-          <input
-            type="password"
-            className="text-sm text-white p-2 rounded-lg border border-gray-600 outline-none shadow-none bg-transparent"
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
         <div className="">
           <button
             className="text-white bg-blue-600 ml-4 rounded-lg cursor-pointer p-2 hover:text-blue-600 hover:bg-white"

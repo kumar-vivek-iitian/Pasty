@@ -1,4 +1,6 @@
+"use client"
 import Navbar from "@/components/Navbar";
+import { SessionProvider } from "next-auth/react";
 import { Geist_Mono } from "next/font/google";
 
 const geist = Geist_Mono({
@@ -7,9 +9,12 @@ const geist = Geist_Mono({
 });
 
 const Home = () => {
+
   return (
     <div>
-      <Navbar />
+      <SessionProvider>
+        <Navbar />
+      </SessionProvider>
       <div
         className={`min-h-screen bg-black text-white flex items-center justify-center px-4 ${geist.className} tracking-tighter`}
       >

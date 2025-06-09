@@ -1,8 +1,9 @@
+"use server"
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import { addPaste } from "@/components/db/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
-const SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,24 +23,9 @@ export async function POST(request: NextRequest) {
     } = body;
     let { timeout }: { timeout: string } = body;
     console.log(title, code, language, theme, timeout, password);
-    const cookie = request.cookies.get("token");
-    const token = cookie?.value;
-    if (token) {
-      let username = "";
-      try {
-        const decoded = jwt.verify(token, SECRET);
-        if (
-          typeof decoded === "object" &&
-          decoded !== null &&
-          "username" in decoded
-        ) {
-          username = decoded.username;
-        }
-      } catch (err) {
-        console.log("Token invalid or expired.");
-        console.log(err);
-        timeout = "15mins";
-      }
+    const session = await getServerSession(authOptions)
+    if (session) {
+      const email = session.user.email;
       const pasteid = await addPaste({
         title,
         code,
@@ -47,7 +33,7 @@ export async function POST(request: NextRequest) {
         theme,
         password,
         timeout,
-        username,
+        email,
       });
       return NextResponse.json({ error: false, pasteid: pasteid });
     } else {

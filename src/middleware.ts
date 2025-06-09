@@ -11,8 +11,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
+  if (!token && url.pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/login", request.url))
+  }
+
 }
 
 export const config = {
-  matcher: ["/login"],
+  matcher: ["/login", "/dashboard", "/register"],
 };
